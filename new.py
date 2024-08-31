@@ -68,15 +68,20 @@ def select_and_download_software():
         click_element(see_all_button)
 
         # Iterate over the first 5 software items and download them
-        for i in range(5):
-            print(f"Processing software {i + 1}")
-            software_link = wait.until(EC.element_to_be_clickable((By.XPATH, f'/html/body/main/div[1]/div/div/div[2]/ul/li[{i+1}]/a/div[1]/div[2]/h2')))
-            click_element(software_link)
-            download_software()
+        for i in range(3):
+            if i > 0:
+                next_button = wait.until(EC.element_to_be_clickable((By.XPATH, f'/html/body/main/div[1]/div/div/div[2]/nav[2]/ul/li[{i+1}]/a')))
+                click_element(next_button)
 
-            # Navigate back to the software list after each download
-            driver.get('https://download.cnet.com/security/windows/')
-            time.sleep(5)
+            for i in range(24):
+                print(f"Processing software {i + 1}")
+                software_link = wait.until(EC.element_to_be_clickable((By.XPATH, f'/html/body/main/div[1]/div/div/div[2]/ul/li[{i+1}]/a/div[1]/div[2]/h2')))
+                click_element(software_link)
+                download_software()
+
+                # Navigate back to the software list after each download
+                driver.get('https://download.cnet.com/security/windows/')
+                time.sleep(5)
     except Exception as e:
         print(f"An error occurred while selecting software: {e}")
 
